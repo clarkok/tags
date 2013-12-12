@@ -44,24 +44,24 @@ notice = (wrapper, text) ->
 # @jQuery(the-user-input)
 createNewTag = (obj) ->
     if obj.val().length
-        tag = obj.val()
+        tag = utils.escape obj.val()
         if tag in $('#'+obj.parent().data('origin')).val().split(',')
             notice obj.parent(), tag
             return
         # add tag before the user-input
-        obj.before newTag obj.val()
+        obj.before newTag tag
         # add text to origin input
         old = $('#'+obj.parent().data('origin')).val()
         if old.length
             old += ','
-        old += obj.val()
+        old += tag
         $('#'+obj.parent().data('origin')).val old
         # remove text in user-input
         obj.val('')
 
 # Delete the last tag
 # @jQuery(the-user-input)
-deleteTag = (obj) ->
+deleteLast = (obj) ->
     tagList = obj.parent().find('.tag')
     if tagList.length == 0
         return
@@ -75,6 +75,21 @@ deleteTag = (obj) ->
     old = oldlist.join(',')
     $('#'+obj.parent().data('origin')).val(old)
 
+deleteTag = (obj) ->
+    tag = obj.text()
+    old = $('#'+obj.parent().data('origin')).val()
+    oldlist = old.split(',')
+    console.debug oldlist
+    for i in [0...oldlist.length]
+        console.debug(tag)
+        console.debug(oldlist[i])
+        if oldlist[i] == tag
+            oldlist.splice(i, 1)
+            console.debug(oldlist)
+    old = oldlist.join(',')
+    $('#'+obj.parent().data('origin')).val(old)
+    obj.detach()
+
 # Event Handler for key
 tagKeyDown = (e) ->
     key = e.KeyCode || e.which
@@ -83,13 +98,15 @@ tagKeyDown = (e) ->
         createNewTag $(e.target)
     if key == 8 and $(e.target).val().length == 0
         e.preventDefault()
-        deleteTag $(e.target)
+        deleteLast $(e.target)
 
 # No Need for comment
 bindEvents = (obj) ->
     tagInput = obj.find '.tags-input'
     tagInput.on 'keydown', tagKeyDown
-    obj.on 'click', () ->
+    obj.on 'click', (e) ->
+        if $(e.target).hasClass 'tag'
+            deleteTag $(e.target)
         tagInput.focus()
 
 $.prototype.tags = (tagOpt) ->

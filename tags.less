@@ -1,35 +1,49 @@
 .tags-wrapper {
     background-color: white;
-    min-height: 2em;
     border-radius: 0.3em;
-    padding: 0.2em;
     border: 1px solid #ccc;
-    word-wrap: break-word;
-    word-break: keep-all;
     cursor: text;
+    min-height: 2em;
+    padding: 0.2em;
+    word-break: keep-all;
+    word-wrap: break-word;
     span.tag {
-        display: inline-block;
-        box-sizing: border-box;
-        padding: 0.2em;
-        margin: 0.2em;
-        height: 1.5em;
-        border: 0px;
         background-color: #999;
+        border: 0px;
+        box-sizing: border-box;
         color: white;
+        cursor: pointer;
+        display: inline-block;
         font-size: 1em;
+        height: 1.5em;
+        margin: 0.2em;
+        padding: 0.2em 1em 0.2em 0.5em;
+        position: relative;
+    }
+    span.tag:hover:after {
+        color: #F99;
+        content: 'x';
+        font-weight: 700;
+        line-height: 1.5em;
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        right: 0.3em;
+        text-align: center;
+        top: 0;
     }
     span.tag.notice {
         background-color: #BBB;
     }
     .tags-input {
-        font-size: 1em;
-        outline: none;
-        display: inline-block;
+        background: transparent;
         border: 0px;
+        box-sizing: border-box;
+        display: inline-block;
+        font-size: 1em;
         height: 1.5em;
         margin: 0.2em;
+        outline: none;
         padding: 0.2em;
-        box-sizing: border-box;
-        background: transparent;
     }
 }
